@@ -722,11 +722,153 @@ function showStorageError(panelId, message) {
 /*  Bootstrap                                                           */
 /* ------------------------------------------------------------------ */
 
+/* ===== SKY BACKGROUND ===== */
+
+function initSkyBackground() {
+  // Hindari membuat lapisan berulang
+  if (document.getElementById("sky-background")) return;
+
+  const sky = document.createElement("div");
+  sky.id = "sky-background";
+  sky.setAttribute("aria-hidden", "true");
+  document.body.prepend(sky);
+
+  // Bulan dan matahari
+  const moon = document.createElement("div");
+  moon.className = "sky-moon";
+  moon.textContent = "☾";
+  sky.appendChild(moon);
+
+  const sun = document.createElement("div");
+  sun.className = "sky-sun";
+  sky.appendChild(sun);
+
+  // 700 bintang, tersebar di seluruh layar
+  const starFragment = document.createDocumentFragment();
+
+  for (let i = 0; i < 700; i++) {
+    const star = document.createElement("span");
+    star.className = "sky-star";
+
+    const r = Math.random();
+    star.textContent =
+      r > 0.97 ? "✦" :
+      r > 0.88 ? "✧" :
+      r > 0.65 ? "·" : "•";
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+
+    star.style.fontSize =
+      (r > 0.96 ? 10 + Math.random() * 7 :
+      2 + Math.random() * 5) + "px";
+
+    star.style.setProperty(
+      "--twinkle", (1 + Math.random() * 4) + "s"
+    );
+    star.style.setProperty(
+      "--delay", (-Math.random() * 5) + "s"
+    );
+
+    starFragment.appendChild(star);
+  }
+
+  sky.appendChild(starFragment);
+
+  // 16 awan dengan posisi dan kecepatan berbeda
+  for (let i = 0; i < 16; i++) {
+    const cloud = document.createElement("div");
+    cloud.className = "sky-cloud";
+    cloud.textContent = "☁";
+
+    cloud.style.top = (4 + Math.random() * 72) + "%";
+    cloud.style.setProperty(
+      "--cloud-size", (35 + Math.random() * 60) + "px"
+    );
+    cloud.style.setProperty(
+      "--cloud-opacity", .35 + Math.random() * .45
+    );
+    cloud.style.setProperty(
+      "--cloud-speed", (30 + Math.random() * 45) + "s"
+    );
+    cloud.style.setProperty(
+      "--cloud-delay", (-Math.random() * 70) + "s"
+    );
+
+    sky.appendChild(cloud);
+  }
+
+  // 4 kelompok burung
+  for (let i = 0; i < 4; i++) {
+    const birds = document.createElement("div");
+    birds.className = "sky-birds";
+    birds.textContent = "⌁ 𓅪 ⌁ 𓅪";
+
+    birds.style.setProperty(
+      "--bird-height", (15 + Math.random() * 40) + "%"
+    );
+    birds.style.setProperty(
+      "--bird-speed", (20 + Math.random() * 20) + "s"
+    );
+    birds.style.setProperty(
+      "--bird-delay", (-Math.random() * 35) + "s"
+    );
+
+    sky.appendChild(birds);
+  }
+
+  // Ganti suasana berdasarkan jam perangkat
+  function updateSkyTime() {
+    const hour = new Date().getHours();
+
+    const period =
+      hour >= 5 && hour < 11 ? "morning" :
+      hour >= 11 && hour < 15 ? "day" :
+      hour >= 15 && hour < 18 ? "sunset" :
+      "night";
+
+    document.body.classList.remove(
+      "morning", "day", "sunset", "night"
+    );
+    document.body.classList.add(period);
+  }
+
+  updateSkyTime();
+  setInterval(updateSkyTime, 60000);
+}
+
 function init() {
+
+  initSkyBackground();
+
   GreetingPanel.init();
   FocusTimer.init();
   TaskManager.init();
   QuickLinks.init();
 }
 
+  GreetingPanel.init();
+  FocusTimer.init();
+  TaskManager.init();
+  QuickLinks.init();
+
 document.addEventListener('DOMContentLoaded', init);
+
+function updateSky() {
+  const hour = new Date().getHours();
+
+  const period =
+    hour >= 5 && hour < 11 ? "morning" :
+    hour >= 11 && hour < 15 ? "day" :
+    hour >= 15 && hour < 18 ? "sunset" :
+    "night";
+
+  document.body.classList.remove(
+    "morning", "day", "sunset", "night"
+  );
+
+  document.body.classList.add(period);
+}
+
+updateSky();
+setInterval(updateSky, 60000);

@@ -265,3 +265,41 @@ describe('TaskManager — JSON serialisation round-trip', () => {
     expect(roundTripped.createdAt).toBe(original.createdAt);
   });
 });
+
+// ===== 500 BINTANG MEMENUHI LANGIT ===== *//
+
+for (let i = 0; i < 500; i++) {
+  const star = document.createElement("span");
+  star.className = "star";
+
+  // Variasi bentuk bintang
+  const random = Math.random();
+  star.textContent =
+    random > 0.94 ? "✦" :
+    random > 0.78 ? "✧" :
+    random > 0.58 ? "+" : "·";
+
+  // Sebar ke seluruh layar
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+
+  // Kebanyakan kecil, beberapa lebih besar
+  const size = Math.random() < 0.08
+    ? 12 + Math.random() * 8
+    : 3 + Math.random() * 7;
+
+  star.style.fontSize = size + "px";
+
+  // Kedipan tidak serempak
+  star.style.setProperty(
+    "--duration",
+    (1 + Math.random() * 4) + "s"
+  );
+
+  star.style.setProperty(
+    "--delay",
+    (-Math.random() * 5) + "s"
+  );
+
+  skyLayer.appendChild(star);
+}
